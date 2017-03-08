@@ -1,0 +1,103 @@
+<html>
+<head>
+<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<script type="text/javascript">
+$(document).ready(function(){
+var mydate = new Date();
+var my_year = mydate.getFullYear()
+var my_month = mydate.getMonth()+1
+var my_today = mydate.getDate()
+var my_hour = mydate.getHours()
+var my_minutes =  mydate.getMinutes(); //获取当前分钟数(0-59)
+var my_secs =  mydate.getSeconds(); //获取当前秒数(0-59)
+
+$("#time").text(mydate.toLocaleString());
+$("#my_year").val(my_year);
+$("#my_month").val(my_month);
+$("#my_today").val(my_today);
+$("#my_hour").val(my_hour);
+$("#my_but").click(function(){
+	my_year=$("#my_year").val();
+	my_month=$("#my_month").val();
+	my_today=$("#my_today").val();
+	my_hour=$("#my_hour").val();
+	my_fortell_time=$("#my_fortell_time").val();
+	if (my_month<0 || my_month>12){
+		alert("wrong month")
+		return
+	}
+	if (my_today<0 || my_today>31){
+		alert("wrong data")
+		return
+	}	
+	if(my_month<10){
+		my_month = '0'+my_month
+	};
+	if(my_today<10){
+		my_today = '0'+my_today
+	};	
+	var my_minutes =  mydate.getMinutes();
+	if(my_minutes<10){
+		my_minutes = '0'+my_minutes
+	};	
+	my_secs =  mydate.getSeconds(); //获取当前秒数(0-59)
+	if(my_secs<10){
+		my_secs = '0'+my_secs
+	};	
+	$("p").hide();
+	$('#my_title1').hide()
+	$('#my_title2').show()
+	$('#my_test').load("liu2?fortell="+my_year+my_month+my_today+my_hour+my_minutes+my_secs+"8"+my_fortell_time);
+
+});
+});
+</script>
+</head>
+
+<body>
+<div class="container">
+<div class="jumbotron">
+	<h1 id = "my_title1">当前时间为</h1>
+	<h1 id = "my_title2" hidden>结果为</h1>
+	<p id="time"></p>
+	<p>年份：
+	<input id="my_year" type="text"  value = "" ">
+	</p>
+	<p>月份：
+	<input id="my_month" type="text" value = "" >
+	</p>
+	<p>日期：
+	<input id="my_today" type="text" value = "" >
+	</p>
+	<p>时辰：
+	<input id="my_hour" type="text" value = "" >
+	</p>
+	<p>
+	<select id = "my_fortell_time">占时：
+		<option value ="0">子</option>
+		<option value ="1">丑</option>
+		<option value ="2">寅</option>
+		<option value ="3">卯</option>		
+		<option value ="4">辰</option>
+		<option value ="5">巳</option>
+		<option value ="6">午</option>
+		<option value ="7">未</option>		
+		<option value ="8">申</option>
+		<option value ="9">酉</option>
+		<option value ="10">戌</option>
+		<option value ="11">亥</option>		
+	</select>
+	</p>	
+	<p>提交：
+	<input id="my_but" type="button" value = "提交" >
+	</p>
+
+	<div id="my_test">	
+	</div>
+</div>
+</div>
+
+</body>
+
+</html> 
