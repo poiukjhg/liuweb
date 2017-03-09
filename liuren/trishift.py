@@ -37,7 +37,18 @@ class trishift:
 		#print '  '.join(list(map(lambda x:['  ', '贼','克'][x], self.up_bottom_overcome[::-1])))
 		today_stoeb = self.st_instance.stoeb[self.st_instance.names.index(self.bottomlist[0])]	
 		#print '日干寄宫'+today_stoeb		
-		full_four = (len(self.upperlist)==len(set(self.upperlist)))		
+		full_four = (len(self.upperlist)==len(set(self.upperlist)))	
+		'''
+		if self.bottomlist[0] == '戊' and self.bottomlist[2] == '辰' and self.upperlist[0] == '子':
+			self.spec(1)
+			return self.out_lines
+		'''	
+		if self.bottomlist[0] =='戊' and self.bottomlist[2] == '辰' and self.upperlist[2] == '戌':
+			self.spec(2)
+			return self.out_lines
+		if self.bottomlist[0]== '戊' and self.bottomlist[2] == '戌' and self.upperlist[2] == '辰':
+			self.spec(2)
+			return self.out_lines				
 		if full_four == False:
 			#print '不备'						
 			#伏吟
@@ -65,7 +76,7 @@ class trishift:
 				self.haske(same_attr.index(1))	
 			else:
 			#涉害	
-			#直接使用孟仲季的取法
+			#直接使用孟仲季的取法，排除戊辰日特例即可
 				self.ninefunc = "涉害"	
 				sehai = ['']*4
 				tmpindex = -1
@@ -79,12 +90,23 @@ class trishift:
 						ltmpindex = self.eb_instance.tricoop[ltmpindex].index(tmpstr)
 						sehai[index] = ['孟', '仲', '季'][ltmpindex]
 						#print self.bottomlist[index]+' 涉害 '+sehai[index]
-				if sehai.count('孟') >= 1:
+				if sehai.count('孟') == 1:
 					tmpindex = sehai.index('孟')
-				elif sehai.count('仲') >= 1:
+				elif sehai.count('孟') == 0 and sehai.count('仲') == 1:
 					tmpindex = sehai.index('仲')
-				elif sehai.count('季') >= 1:
-					tmpindex = sehai.index('季')										
+				elif sehai.count('孟') == 0 and sehai.count('仲') == 0 and sehai.count('季') == 1:
+					tmpindex = sehai.index('季')															
+				if (sehai.count('孟') >1) or (sehai.count('孟')== 0 and sehai.count('仲') > 1) or (sehai.count('孟') == 0 and sehai.count('仲') == 0 and sehai.count('季') > 1):
+					if stattr == '阳':
+						if self.up_bottom_overcome[0] == 1:
+							tmpindex = 0	
+						else:
+							tmpindex = 1								
+					else:
+						if self.up_bottom_overcome[2] == 1:
+							tmpindex = 2	
+						else:
+							tmpindex = 3
 				if 	tmpindex == -1:
 					print '涉害 error'
 					return None
@@ -110,7 +132,7 @@ class trishift:
 				self.haske(same_attr.index(1))	
 			else:
 			#涉害	
-			#直接使用孟仲季的取法
+			#直接使用孟仲季的取法，排除戊辰日特例即可
 				self.ninefunc = "涉害"
 				sehai = ['']*4
 				tmpindex = -1
@@ -124,12 +146,24 @@ class trishift:
 						ltmpindex = self.eb_instance.tricoop[ltmpindex].index(tmpstr)
 						sehai[index] = ['孟', '仲', '季'][ltmpindex]
 						#print self.upperlist[index]+' 涉害 '+sehai[index]
-				if sehai.count('孟') >= 1:
+				if sehai.count('孟') == 1:
 					tmpindex = sehai.index('孟')
-				elif sehai.count('仲') >= 1:
+				elif sehai.count('孟') == 0 and sehai.count('仲') == 1:
 					tmpindex = sehai.index('仲')
-				elif sehai.count('季') >= 1:
-					tmpindex = sehai.index('季')										
+				elif sehai.count('孟') == 0 and sehai.count('仲') == 0 and sehai.count('季') == 1:
+					tmpindex = sehai.index('季')															
+				if (sehai.count('孟') >1) or (sehai.count('孟')== 0 and sehai.count('仲') > 1) or (sehai.count('孟') == 0 and sehai.count('仲') == 0 and sehai.count('季') > 1):
+					if stattr == '阳':
+						if self.up_bottom_overcome[0] == 2:
+							tmpindex = 0	
+						else:
+							tmpindex = 1								
+					else:
+						if self.up_bottom_overcome[2] == 2:
+							tmpindex = 2	
+						else:
+							tmpindex = 3
+						tmpindex = 2	
 				if 	tmpindex == -1:
 					print '涉害 error'
 					return None
@@ -252,7 +286,7 @@ class trishift:
 			self.tri[2] = self.upperlist[0]
 		#冬蛇掩目	
 		else:	
-			self.tri[0] = self.eb_instance.names[self.upperlist.index('酉')]
+			self.tri[0] = self.eb_instance.names[self.skyplate.index('酉')]
 			self.tri[1] = self.upperlist[0]
 			self.tri[2] = self.upperlist[2]			
 		self.out_res()	
@@ -311,5 +345,14 @@ class trishift:
 			self.tri[0] = self.skyplate[(self.skyplate.index(self.upperlist[0])-3+12)%12]	
 		self.tri[1] = self.upperlist[0]
 		self.tri[2] = self.upperlist[0]			
-		self.out_res()		
-	
+		self.out_res()	
+	def spec(self, spec_index):
+		if spec_index == 1:
+			self.tri[0] = '子'
+			self.tri[1] = '未'
+			self.tri[2] = '寅'
+		if spec_index == 2:
+			self.tri[0] = '巳'
+			self.tri[1] = '亥'
+			self.tri[2] = '巳'
+		self.out_res()

@@ -1,4 +1,4 @@
-from flask import Flask,url_for,render_template, make_response,request
+from flask import Flask,url_for,render_template, make_response,request, redirect
 from liuren import run
 from datetime import datetime, timedelta
 
@@ -45,9 +45,25 @@ def liu_page2():
 	fortell_zone = fortell[14:15]
 	fortell_index = fortell[15:]	
 	result = run.run(fortell_time, fortell_zone, fortell_index)
+	if len(result) == 0:
+		error = "no answer"
+		return render_template('error.html', error=error)
 	resp = make_response(render_template('liu.html', res = result))
 	resp.set_cookie('cur_fortel', fortell)
 	return resp
+
+@app.route('/liu2/upload', methods=['POST'])
+def upload_file():
+    if request.method == 'POST':
+    	fstr = request.form['resstr']
+    	fstr_name = request.form['filename']
+    	f = open('/tmp/'+fstr_name+'.html', 'w')
+    	f.write(fstr)
+    	f.close()
+    	return redirect('/liuq/')
+        
+
+        ##f.save('/var/www/uploads/' + secure_filename("aa")) request.args.get('resstr')
 	
 '''
 @app.route('/liu/upload', methods=['GET', 'POST'])
