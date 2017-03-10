@@ -4,11 +4,12 @@ from output_results import output_results
 from datetime import datetime, timedelta
 from earthbranch import earthbranch
 from gettodayse import todayse
+from get_yearloop import get_yearloop
 import sys
 
 reload(sys)
 sys.setdefaultencoding('utf8')
-def run(fortell_time_str, fortell_zone_str, fortell_index_str ):
+def run(fortell_time_str, fortell_zone_str, fortell_index_str, gender, birth):
 	fortell_time = datetime.strptime(fortell_time_str, '%Y-%m-%d %H:%M:%S')
 	fortell_zone = int(fortell_zone_str)
 	fortell_index = int(fortell_index_str)
@@ -21,6 +22,11 @@ def run(fortell_time_str, fortell_zone_str, fortell_index_str ):
 	tmphour = gt.get_hour()
 	tmphoureb = tmphour[3:]
 	tmpgeneral = gt.get_month_general()
+	if gender == '1':
+		tmpgender = '男'
+	else:
+		tmpgender = '女'	
+	tmpbirth = birth
 	'''
 	print "tmptoday "+tmptoday
 	print "tmptodayst "+tmptodayst
@@ -29,7 +35,9 @@ def run(fortell_time_str, fortell_zone_str, fortell_index_str ):
 	print "tmphoureb "+tmphoureb	
 	'''
 	#fortell_time_str = fortell_time.strftime('%Y-%m-%d %H:%M:%S')
-	tmpline = "<p>起课时间："+	fortell_time_str+"</p>"
+	gyl = get_yearloop(tmpgender, tmpbirth, fortell_time_str[0:4])
+	tmpline = "<p>"+tmpgender+'命  '+gyl.return_res()+"</p>"
+	tmpline = tmpline+"<p>起课时间："+	fortell_time_str+"</p>"
 	tmpline = tmpline+"<p>占时: "+gt.get_year()+"年 "+gt.get_month()+"月 "+tmptoday+"日 "+tmphour+ "时 " + " 月将"+ tmpgeneral+"</p>"
 	
 	gs = generate_result(tmptodayst,tmptodayeb,tmpgeneral,tmphoureb)

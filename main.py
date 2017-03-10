@@ -1,6 +1,7 @@
 from flask import Flask,url_for,render_template, make_response,request, redirect
 from liuren import run
 from datetime import datetime, timedelta
+import re
 
 app = Flask(__name__)
 
@@ -18,8 +19,11 @@ def hello_world(name = None):
 def main_page(username):
     return 'Main page %s!' %username
 
-@app.route('/liu/<fortell>')
-def liu_page(fortell):
+@app.route('/liu/<fortell00>')
+def liu_page(fortell00):
+	gender = fortell00[0:1]
+	birth = fortell00[2:5]
+	fortell = fortell00[5:]
 	if len(fortell)>17 or len(fortell)<16 or int(fortell) == False:
 		error = "error url(%s)" % (fortell or ' ')
 		return render_template('error.html', error=error)
@@ -38,13 +42,16 @@ def liu_req():
 @app.route('/liuq/liu2/')
 def liu_page2():
 	fortell = request.args.get('fortell', '')
+	gender = fortell[0:1]
+	birth = fortell[1:5]
+	fortell = fortell[5:]	
 	if len(fortell)>17 or len(fortell)<16 or int(fortell) == False:
 		error = "error url(%d)" % len(fortell)
 		return render_template('error.html', error=error)
 	fortell_time = fortell[0:4]+"-"+fortell[4:6]+"-"+fortell[6:8]+" "+fortell[8:10]+":"+fortell[10:12]+":"+fortell[12:14]
 	fortell_zone = fortell[14:15]
 	fortell_index = fortell[15:]	
-	result = run.run(fortell_time, fortell_zone, fortell_index)
+	result = run.run(fortell_time, fortell_zone, fortell_index, gender, birth)
 	if len(result) == 0:
 		error = "no answer"
 		return render_template('error.html', error=error)
@@ -57,6 +64,10 @@ def upload_file():
     if request.method == 'POST':
     	fstr = request.form['resstr']
     	fstr_name = request.form['filename']
+    	fstr = fstr.replace('</p>', '\n\r')
+    	fstr = fstr.replace('<p>', '')
+    	fstr = fstr.replace('&nbsp', ' ')
+    	fstr = re.sub(r'<[^>]+>', "", fstr)
     	f = open('/tmp/'+fstr_name+'.html', 'w')
     	f.write(fstr)
     	f.close()
