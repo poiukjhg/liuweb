@@ -39,7 +39,7 @@ def run(fortell_time_str, fortell_zone_str, fortell_index_str, gender, birth):
 	tmpline = "<p>"+tmpgender+'命  '+gyl.return_res()+"</p>"
 	tmpline = tmpline+"<p>起课时间："+	fortell_time_str+"</p>"
 	tmpline = tmpline+"<p>占时: "+gt.get_year()+"年 "+gt.get_month()+"月 "+tmptoday+"日 "+tmphour+ "时 " + " 月将"+ tmpgeneral+"</p>"
-	
+	tmpline = tmpline+"<p>"+gt.get_front_jieqi()+" "+gt.get_after_jieqi()+"</p>"
 	gs = generate_result(tmptodayst,tmptodayeb,tmpgeneral,tmphoureb)
 	gs.generate_skyplate()
 	gs.generate_four()

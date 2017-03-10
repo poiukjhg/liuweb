@@ -38,6 +38,7 @@ class todayse:
 		#print ' '.join(self.jieqi)
 		#xinlitmp.paiYue(int(self.year))
 		#xinlitmp.paiYue(int(self.year)-1)
+		self.jieqi_index = 0
 	def get_year(self):
 		self.ystmpindex = int(self.year[-1])
 		self.ystmpindex = self.ystmpindex -3
@@ -55,8 +56,10 @@ class todayse:
 			if nowtt > lasttmptime and nowtt<tmptime:			
 				break
 			lasttmptime = tmptime
+		
 		self.mstmpindex = (self.ystmpindex*2+(index-1))%10	 
 		self.mebtmpindex = (index+2)%12
+		self.get_jieqi_index()
 		return self.st_instance.names[self.mstmpindex]+self.eb_instance.names[self.mebtmpindex-1]	
 	def get_month_general(self):		
 		lasttmptime = datetime.strptime(self.year+'-01-01 01:01:59', '%Y-%m-%d %H:%M:%S')
@@ -122,25 +125,43 @@ class todayse:
 	def set_fortell_hour(self, index):
 		self.fortell_hour_index = index
 		self.is_set_hour = True
-	
-
+	def get_jieqi_index(self):
+		lasttmptime = datetime.strptime(self.year+'-01-01 01:01:59', '%Y-%m-%d %H:%M:%S')
+		nowtt = self.real_time
+		for index in range(24):
+			tmptime = datetime.strptime(self.jieqi[index], '%Y-%m-%d %H:%M:%S')
+			#print lasttmptime.strftime('%Y-%m-%d %H:%M:%S')+" "+self.nowtime+" "+tmptime.strftime('%Y-%m-%d %H:%M:%S')
+			if nowtt > lasttmptime and nowtt<tmptime:			
+				break
+			lasttmptime = tmptime		
+		self.jieqi_index = index
+	def get_front_jieqi(self):
+		jqB = [ #节气表  
+        "立春","雨水","惊蛰","春分","清明","谷雨","立夏","小满","芒种","夏至","小暑","大暑","立秋","处暑","白露",  
+        "秋分","寒露","霜降","立冬","小雪","大雪","冬至","小寒","大寒"];  		
+		return jqB[self.jieqi_index-1]+":"+self.jieqi[self.jieqi_index-1]	
+	def get_after_jieqi(self):
+		jqB = [ #节气表  
+        "立春","雨水","惊蛰","春分","清明","谷雨","立夏","小满","芒种","夏至","小暑","大暑","立秋","处暑","白露",  
+        "秋分","寒露","霜降","立冬","小雪","大雪","冬至","小寒","大寒"]; 		
+		return jqB[self.jieqi_index]+":"+self.jieqi[self.jieqi_index]	
 
 if __name__ == "__main__":
 	
 	test = todayse()	
 	print  test.real_time
-	print "年"+test.get_year()+" 月"+test.get_month()+" 日"+test.get_day() + " 月将"+test.get_month_general()+ " 占时"+test.get_hour()
+	print "年"+test.get_year()+" 月"+test.get_month()+" 日"+test.get_day() + " 月将"+test.get_month_general()+ " 占时"+test.get_hour()+" 节气"+test.get_front_jieqi()+" "+test.get_after_jieqi()
 	print '2009-07-16 12:59:59'
 	test = todayse(datetime.strptime('2009-07-16 12:59:59', '%Y-%m-%d %H:%M:%S'))
-	print "年"+test.get_year()+" 月"+test.get_month()+" 日"+test.get_day() + " 月将"+test.get_month_general()+ " 占时"+test.get_hour()
+	print "年"+test.get_year()+" 月"+test.get_month()+" 日"+test.get_day() + " 月将"+test.get_month_general()+ " 占时"+test.get_hour()+" 节气"+test.get_front_jieqi()+" "+test.get_after_jieqi()
 	print '2016-11-06 23:19:59' 
 	test = todayse(datetime.strptime('2016-11-06 23:19:59', '%Y-%m-%d %H:%M:%S'))
-	print "年"+test.get_year()+" 月"+test.get_month() +" 日"+test.get_day()+ " 月将"+test.get_month_general()+ " 占时"+test.get_hour()
+	print "年"+test.get_year()+" 月"+test.get_month() +" 日"+test.get_day()+ " 月将"+test.get_month_general()+ " 占时"+test.get_hour()+" 节气"+test.get_front_jieqi()+" "+test.get_after_jieqi()
 
 	print '2016-11-06 23:59:59'
 	test = todayse(datetime.strptime('2016-11-06 23:59:59', '%Y-%m-%d %H:%M:%S'))
 	test.set_fortell_hour(4)
-	print "年"+test.get_year()+" 月"+test.get_month()+" 日"+test.get_day() + " 月将"+test.get_month_general()+ " 占时"+test.get_hour()
+	print "年"+test.get_year()+" 月"+test.get_month()+" 日"+test.get_day() + " 月将"+test.get_month_general()+ " 占时"+test.get_hour()+" 节气"+test.get_front_jieqi()+" "+test.get_after_jieqi()
 
     
 
