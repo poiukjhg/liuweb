@@ -145,23 +145,27 @@ class todayse:
         "立春","雨水","惊蛰","春分","清明","谷雨","立夏","小满","芒种","夏至","小暑","大暑","立秋","处暑","白露",  
         "秋分","寒露","霜降","立冬","小雪","大雪","冬至","小寒","大寒"]; 		
 		return jqB[self.jieqi_index]+":"+self.jieqi[self.jieqi_index]	
+	def get_blank(self):
+		index = 0
+		tmp_diff = 10-self.dsttmpindex
+		return "  本旬空亡："+self.eb_instance.names[(self.debtmpindex+tmp_diff)%12]+self.eb_instance.names[(self.debtmpindex+tmp_diff+1)%12]
 
 if __name__ == "__main__":
 	
 	test = todayse()	
 	print  test.real_time
-	print "年"+test.get_year()+" 月"+test.get_month()+" 日"+test.get_day() + " 月将"+test.get_month_general()+ " 占时"+test.get_hour()+" 节气"+test.get_front_jieqi()+" "+test.get_after_jieqi()
+	print "年"+test.get_year()+" 月"+test.get_month()+" 日"+test.get_day() + " 月将"+test.get_month_general()+ " 占时"+test.get_hour()+" 节气"+test.get_front_jieqi()+" "+test.get_after_jieqi()+" "+test.get_blank()
 	print '2009-07-16 12:59:59'
 	test = todayse(datetime.strptime('2009-07-16 12:59:59', '%Y-%m-%d %H:%M:%S'))
-	print "年"+test.get_year()+" 月"+test.get_month()+" 日"+test.get_day() + " 月将"+test.get_month_general()+ " 占时"+test.get_hour()+" 节气"+test.get_front_jieqi()+" "+test.get_after_jieqi()
+	print "年"+test.get_year()+" 月"+test.get_month()+" 日"+test.get_day() + " 月将"+test.get_month_general()+ " 占时"+test.get_hour()+" 节气"+test.get_front_jieqi()+" "+test.get_after_jieqi()+" "+test.get_blank()
 	print '2016-11-06 23:19:59' 
 	test = todayse(datetime.strptime('2016-11-06 23:19:59', '%Y-%m-%d %H:%M:%S'))
-	print "年"+test.get_year()+" 月"+test.get_month() +" 日"+test.get_day()+ " 月将"+test.get_month_general()+ " 占时"+test.get_hour()+" 节气"+test.get_front_jieqi()+" "+test.get_after_jieqi()
+	print "年"+test.get_year()+" 月"+test.get_month() +" 日"+test.get_day()+ " 月将"+test.get_month_general()+ " 占时"+test.get_hour()+" 节气"+test.get_front_jieqi()+" "+test.get_after_jieqi()+" "+test.get_blank()
 
 	print '2016-11-06 23:59:59'
 	test = todayse(datetime.strptime('2016-11-06 23:59:59', '%Y-%m-%d %H:%M:%S'))
 	test.set_fortell_hour(4)
-	print "年"+test.get_year()+" 月"+test.get_month()+" 日"+test.get_day() + " 月将"+test.get_month_general()+ " 占时"+test.get_hour()+" 节气"+test.get_front_jieqi()+" "+test.get_after_jieqi()
+	print "年"+test.get_year()+" 月"+test.get_month()+" 日"+test.get_day() + " 月将"+test.get_month_general()+ " 占时"+test.get_hour()+" 节气"+test.get_front_jieqi()+" "+test.get_after_jieqi()+" "+test.get_blank()
 
     
 
