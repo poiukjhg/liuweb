@@ -104,10 +104,10 @@ class todayse:
 		print str(d)
 		'''
 		#print str(g)
-		stindex = int(g)%10-1
+		stindex = int(g+10-1)%10
 		z = g+4*C+10+i
 		#print str(z)
-		ebindex = int(z)%12-1
+		ebindex = int(z+12-1)%12
 		self.debtmpindex = ebindex
 		self.dsttmpindex = stindex
 		return self.st_instance.names[stindex]+self.eb_instance.names[ebindex]	
