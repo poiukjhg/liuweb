@@ -3,6 +3,7 @@ import fiveelements
 import earthbranch
 import skytrunk
 import os, sys
+import global_record_list
 class trishift:
 	def __init__(self, upperlist, bottomlist, skyplate, skygeneral, skyplate_st):		
 		self.eb_instance = earthbranch.earthbranch()
@@ -271,7 +272,29 @@ class trishift:
 			if f :	
 				f.close()
 		self.out_lines = tmpline
-				
+		global_record_list.set_global_record(24, self.tri[0])
+		global_record_list.set_global_record(28, self.tri[1])				
+		global_record_list.set_global_record(32, self.tri[2])
+		tmprelation = relation[0]	
+		if tmprelation == '子':
+			tmprelation = '食'	
+		global_record_list.set_global_record(22, tmprelation)
+		tmprelation = relation[1]	
+		if tmprelation == '子':
+			tmprelation = '食'
+		global_record_list.set_global_record(26, tmprelation)				
+		tmprelation = relation[2]	
+		if tmprelation == '子':
+			tmprelation = '食'
+		global_record_list.set_global_record(30, tmprelation)
+		global_record_list.set_global_record(25, self.skygeneral[self.skyplate.index(self.tri[0])])
+		global_record_list.set_global_record(29, self.skygeneral[self.skyplate.index(self.tri[1])])				
+		global_record_list.set_global_record(33, self.skygeneral[self.skyplate.index(self.tri[2])])
+
+		global_record_list.set_global_record(23, self.skyplate_st[self.skyplate.index(self.tri[0])])
+		global_record_list.set_global_record(27, self.skyplate_st[self.skyplate.index(self.tri[1])])				
+		global_record_list.set_global_record(31, self.skyplate_st[self.skyplate.index(self.tri[2])])
+
 	def haske(self, index):		
 		self.tri[0] = self.upperlist[index]
 		self.tri[1] = self.skyplate[self.eb_instance.names.index(self.tri[0])]

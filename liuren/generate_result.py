@@ -5,6 +5,7 @@ import skytrunk
 import skygeneral
 import trishift
 import output_results
+import global_record_list
 class generate_result():
 	def __init__(self, today_st, today_eb, month_general, foretell_hour):
 		'''
@@ -29,6 +30,8 @@ class generate_result():
 		self.bottom_four = [today_st, '', today_eb, '']
 		self.trigeneral = ['']*3
 		self.triline = ''
+		global_record_list.set_global_record(8, self.month_general)
+		global_record_list.set_global_record(9, self.foretell_hour)
 	def generate_skyplate(self):
 		eloopindex = self.eb_instance.names.index(self.month_general)
 		fortellindex = self.eb_instance.names.index(self.foretell_hour)
@@ -57,8 +60,22 @@ class generate_result():
 		self.bottom_four[3] = tmpstr
 		self.upper_four[3] = self.skyplate[self.eb_instance.names.index(tmpstr)]
 		#print '地支阴神'+self.upper_four[3]
+		global_record_list.set_global_record(10, self.bottom_four[0])
+		global_record_list.set_global_record(11, self.upper_four[0])
+		global_record_list.set_global_record(13, self.bottom_four[1])
+		global_record_list.set_global_record(14, self.upper_four[1])
+		global_record_list.set_global_record(16, self.bottom_four[2])
+		global_record_list.set_global_record(17, self.upper_four[2])
+		global_record_list.set_global_record(19, self.bottom_four[3])
+		global_record_list.set_global_record(20, self.upper_four[3])
+		global_record_list.set_global_record(4, self.st)
+		global_record_list.set_global_record(5, self.eb)
 	def generate_skygeneral(self):
 		self.skygeneral = self.sg_instance.get_skygeneral_list(self.st, self.skyplate, self.foretell_hour)
+		global_record_list.set_global_record(12, self.skygeneral[self.skyplate.index(self.upper_four[0])])
+		global_record_list.set_global_record(15, self.skygeneral[self.skyplate.index(self.upper_four[1])])
+		global_record_list.set_global_record(18, self.skygeneral[self.skyplate.index(self.upper_four[2])])
+		global_record_list.set_global_record(21, self.skygeneral[self.skyplate.index(self.upper_four[3])])
 	def generate_trishift(self):
 		self.trishift = trishift.trishift(self.upper_four, self.bottom_four, self.skyplate, self.skygeneral, self.skyplate_st)
 		'''

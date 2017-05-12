@@ -1,5 +1,5 @@
 from flask import Flask,url_for,render_template, make_response,request, redirect
-from liuren import run
+from liuren import run, liuren_db, global_record_list
 from datetime import datetime, timedelta
 import re
 
@@ -37,6 +37,7 @@ def liu_page(fortell00):
 
 @app.route('/liuq/')
 def liu_req():
+	global_record_list.init_global_record()
 	return render_template('liuq.html')
 
 @app.route('/liuq/liu2/')
@@ -64,6 +65,11 @@ def upload_file():
     if request.method == 'POST':
     	fstr = request.form['resstr']
     	fstr_name = request.form['filename']
+    	liuren_db.init_db()
+    	print 'save str '+global_record_list.get_global_record()
+    	liuren_db.add_liuq_log(global_record_list.get_global_record(), fstr)
+    	liuren_db.destroy_db()
+    	'''
     	fstr = fstr.replace('</p>', '\n\r')
     	fstr = fstr.replace('<p>', '')
     	fstr = fstr.replace('&nbsp', ' ')
@@ -71,6 +77,7 @@ def upload_file():
     	f = open('/tmp/'+fstr_name+'.html', 'w')
     	f.write(fstr)
     	f.close()
+    	'''
     	return redirect('/liuq/')
         
 

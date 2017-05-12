@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from earthbranch import earthbranch
 from gettodayse import todayse
 from get_yearloop import get_yearloop
+import global_record_list
 import sys
 
 reload(sys)
@@ -46,4 +47,14 @@ def run(fortell_time_str, fortell_zone_str, fortell_index_str, gender, birth):
 	gs.generate_skygeneral()
 	gs.generate_trishift()	
 	output11 = output_results(gs.st, gs.eb, gs.month_general, gs.foretell_hour, gs.skyplate, gs.skygeneral, gs.bottom_four, gs.upper_four, gs.triline)
+
+	tmp_year=gt.get_year()
+	tmp_month = gt.get_month()
+	global_record_list.set_global_record(0, tmp_year[0:3])
+	global_record_list.set_global_record(1, tmp_year[3:])
+	global_record_list.set_global_record(2, tmp_month[0:3])
+	global_record_list.set_global_record(3, tmp_month[3:])
+	global_record_list.set_global_record(6, tmphour[0:3])
+	global_record_list.set_global_record(7, tmphour[3:])
+	print global_record_list.get_global_record()
 	return tmpline+output11.output()
