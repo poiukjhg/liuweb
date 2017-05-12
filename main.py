@@ -33,6 +33,9 @@ def liu_page(fortell00):
 	result = run.run(fortell_time, fortell_zone, fortell_index)
 	resp = make_response(render_template('liu.html', res = result))
 	resp.set_cookie('cur_fortel', fortell)
+	tmpstr = global_record_list.get_global_record()
+	resp.set_cookie('save_data', tmpstr)
+	print 'save str '+ tmpstr	
 	return resp
 
 @app.route('/liuq/')
@@ -58,6 +61,9 @@ def liu_page2():
 		return render_template('error.html', error=error)
 	resp = make_response(render_template('liu.html', res = result))
 	resp.set_cookie('cur_fortel', fortell)
+        tmpstr = global_record_list.get_global_record()
+        resp.set_cookie('save_data', tmpstr)
+        print 'save str '+ tmpstr
 	return resp
 
 @app.route('/liu2/upload', methods=['POST'])
@@ -66,8 +72,10 @@ def upload_file():
     	fstr = request.form['resstr']
     	fstr_name = request.form['filename']
     	liuren_db.init_db()
-    	print 'save str '+global_record_list.get_global_record()
-    	liuren_db.add_liuq_log(global_record_list.get_global_record(), fstr)
+	#tmpstr = global_record_list.get_global_record()
+	tmpstr = request.cookies.get('save_data')
+    	print 'save str '+ tmpstr
+    	liuren_db.add_liuq_log(tmpstr, fstr)
     	liuren_db.destroy_db()
     	'''
     	fstr = fstr.replace('</p>', '\n\r')
