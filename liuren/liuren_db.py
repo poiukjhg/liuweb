@@ -19,7 +19,7 @@ class BaseModel(Model):
 
 class liuq_log(BaseModel):
     _id = PrimaryKeyField()
-    plate_date = CharField(101)
+    plate_date = CharField()
     plate_file = TextField()
     save_time = DateTimeField(default=datetime.datetime.now)
 
