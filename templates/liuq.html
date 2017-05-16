@@ -76,7 +76,6 @@ $("#my_but_rand").click(function(){
     var rand = parseInt(Math.random() * (x - y + 1) + y); 
     $("#my_fortell_time").val(rand);
 });
-
 $("#my_but_save").click(function(){
 	str1 = str1+"<p>评语："+$('#result_discuss').val()+"</p>";
 	$.post("/liu2/upload", {Action:"post", resstr:str1, filename:my_year+my_month+my_today+my_hour+my_minitue+my_secs+my_zone+my_fortell_time} );
@@ -163,4 +162,4 @@ $("#my_but_save").click(function(){
 </div>
 </body>
 
-</html> 
+</html>  

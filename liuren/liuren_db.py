@@ -1,5 +1,7 @@
 from peewee import *
 import datetime
+import liuren_dbcfg
+'''
 database =  MySQLDatabase(
         database = 'liuq',
         host = 'localhost',
@@ -8,10 +10,10 @@ database =  MySQLDatabase(
         passwd = '1234',
         charset = 'utf8'
         ) 
-
+'''
 class BaseModel(Model):
     class Meta:
-        database = database
+        database = liuren_dbcfg.database
 
 class liuq_log(BaseModel):
     _id = PrimaryKeyField()
@@ -20,20 +22,47 @@ class liuq_log(BaseModel):
     save_time = DateTimeField(default=datetime.datetime.now)
 
 def init_db():
-    global database
-    database.connect()
-    print database.create_tables([liuq_log], safe=True)
+    #global database
+    liuren_dbcfg.database.connect()
+    print liuren_dbcfg.database.create_tables([liuq_log], safe=True)
 
 
 def add_liuq_log(pdate, ptest):
+    #print ptest
+    liuq_log.create(plate_date=pdate, plate_file=ptest)
+
+def build_summary_from_date(plate_date):
+    return 111
+
+
+def get_detail_from_date(qid):
+    l = liuq_log.get(liuq_log._id==qid)
+    print l.plate_file
+    return l.plate_file
+
+def get_liuq_all(qid=None): 
+    if qid == None:
+        l = liuq_log.select()
+    else:
+        l = liuq_log.select().where(liuq_log._id==qid)
+    L = {}
+    item = {}
+    index = 0
+    for i in l:
+        item = {'id': i._id,'summary': build_summary_from_date(i.plate_date), 'detail': i.plate_file}
+        L[index] = item
+    return L
+
+def del_liuq_(qid):
     try:
-        n_ser = liuq_log.get(liuq_log.plate_date==pdate)
+        n_ser = liuq_log.get(liuq_log._id==qid)
     except Exception, e:        
-        #print e 
-        liuq_log.create(plate_date=pdate, plate_file=ptest)
+        return
+    finally:
+        n_ser.delete_instance()
     
 def destroy_db():
-    database.close()
+    liuren_dbcfg.database.close()
 
 if __name__ == '__main__':
     try:

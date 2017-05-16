@@ -1,0 +1,61 @@
+<html>
+<head>
+<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style type="text/css">
+</style>>
+<script type="text/javascript">
+	function del_plate(obj)
+	{
+	    var plate_id = obj.id
+	    plate_id=plate_id.split("_btn");
+	    plate_id = plate_id[0] 
+	    console.log(plate_id)
+	    
+	    $.post("../delplate",
+	        {
+	            plate: plate_id,
+	        },
+	        function(data,status){
+	            setTimeout(alert("del plate: " + plate_id + "\nStatus: " + status), 1000);
+	        $('#'+plate_id).remove()    
+	    });	    	   
+	}
+</script>
+</head>
+
+<body>
+<div class="container">
+<div class="row" >
+    <table class="table table-hover" id="plate_table">
+    <thead> <tr><th>基本信息</th><th>  </th></tr></thead>
+    <tbody>
+    {%  for key, value in plate.iteritems() %}
+        <tr id={{value.id}}>
+        <td ><a data-toggle="modal" href={{value.id}} data-target="#myModal">{{value.summary}}</a></td>
+        <td><button type="button" class="btn btn-xs btn-primary " id={{value.id}}_btn onclick ="del_plate(this)"><span class="glyphicon glyphicon-minus"></span></td>
+        </tr>
+
+    {% endfor %}          
+    </tbody>
+    </table>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+</div>
+</div>
+</body>
+
+</html>

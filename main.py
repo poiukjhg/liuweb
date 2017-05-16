@@ -68,15 +68,15 @@ def liu_page2():
 
 @app.route('/liu2/upload', methods=['POST'])
 def upload_file():
-    if request.method == 'POST':
-    	fstr = request.form['resstr']
-    	fstr_name = request.form['filename']
-    	liuren_db.init_db()
+	if request.method == 'POST':
+		fstr = request.form['resstr']
+		fstr_name = request.form['filename']
+		liuren_db.init_db()
 	#tmpstr = global_record_list.get_global_record()
-	tmpstr = request.cookies.get('save_data')
-    	print 'save str '+ tmpstr
-    	liuren_db.add_liuq_log(tmpstr, fstr)
-    	liuren_db.destroy_db()
+		tmpstr = request.cookies.get('save_data')
+		print 'save str '+ tmpstr
+		liuren_db.add_liuq_log(tmpstr, fstr)
+		liuren_db.destroy_db()
     	'''
     	fstr = fstr.replace('</p>', '\n\r')
     	fstr = fstr.replace('<p>', '')
@@ -87,32 +87,28 @@ def upload_file():
     	f.close()
     	'''
     	return redirect('/liuq/')
-        
+@app.route('/liuql/')
+def query_plate():
+	liuren_db.init_db()
+	tmp_str = liuren_db.get_liuq_all()
+	liuren_db.destroy_db()
+	return render_template('liuql.html', plate=tmp_str)
 
-        ##f.save('/var/www/uploads/' + secure_filename("aa")) request.args.get('resstr')
-	
-'''
-@app.route('/liu/upload', methods=['GET', 'POST'])
-def upload_file():
-    if request.method == 'POST':
-        f = request.files['the_file']
-        f.save('/var/www/uploads/' + secure_filename(f.filename)) 
+@app.route('/liuql/<plate_id>')
+def query_plate_detail(plate_id):
+	liuren_db.init_db()
+	tmp_str = liuren_db.get_detail_from_date(plate_id)
+	liuren_db.destroy_db()
+	return tmp_str
 
-
-@app.route('/login', methods=['POST', 'GET'])
-def login():
-    error = None
-    if request.method == 'POST':
-        if valid_login(request.form['username'],
-                       request.form['password']):
-            return log_the_user_in(request.form['username'])
-        else:
-            error = 'Invalid username/password'
-    # the code below is executed if the request method
-    # was GET or the credentials were invalid
-    return render_template('login.html', error=error)
-'''
-   
+@app.route('/delplate', methods=['POST'])
+def delete_plate():
+	if request.method == 'POST':
+		plate_id = request.form['plate']
+		liuren_db.init_db()
+		tmp_str = liuren_db.del_liuq_(plate_id)
+		liuren_db.destroy_db()	
+	return 'ok', 200   
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
