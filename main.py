@@ -92,6 +92,7 @@ def query_plate():
 	liuren_db.init_db()
 	tmp_str = liuren_db.get_liuq_all()
 	liuren_db.destroy_db()
+	print tmp_str
 	return render_template('liuql.html', plate=tmp_str)
 
 @app.route('/liuql/<plate_id>')

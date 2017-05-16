@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*- 
 from peewee import *
 import datetime
 import liuren_dbcfg
+import global_record_list
 '''
 database =  MySQLDatabase(
         database = 'liuq',
@@ -32,7 +34,14 @@ def add_liuq_log(pdate, ptest):
     liuq_log.create(plate_date=pdate, plate_file=ptest)
 
 def build_summary_from_date(plate_date):
-    return 111
+    l = plate_date.split(',')
+    d = {value:key for key, value in global_record_list.ganzhi_dict.items()}
+    index = 0
+    tmp_str=' '
+    for index in range(8) :
+        tmp_str = tmp_str+d[l[index]]
+    tmp_str = tmp_str+'  '+d[l[9]]+'时'+d[l[8]]+'将'   
+    return tmp_str
 
 
 def get_detail_from_date(qid):
@@ -50,7 +59,8 @@ def get_liuq_all(qid=None):
     index = 0
     for i in l:
         item = {'id': i._id,'summary': build_summary_from_date(i.plate_date), 'detail': i.plate_file}
-        L[index] = item
+        L[str(index)] = item
+        index= index+1;
     return L
 
 def del_liuq_(qid):
