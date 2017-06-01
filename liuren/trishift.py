@@ -25,8 +25,8 @@ class trishift:
 		self.upper_attri = list(map(lambda x: self.eb_instance.attribute[self.eb_instance.names.index(x)], self.upperlist))	
 		self.bottom_attri[0] = self.st_instance.attribute[self.st_instance.names.index(self.bottomlist[0])]
 		self.bottom_attri[1:] = list(map(lambda x: self.eb_instance.attribute[self.eb_instance.names.index(x)], self.bottomlist[1:]))		
-		#print '  '.join(self.upper_attri[::-1])
-		#print '  '.join(self.bottom_attri[::-1])
+		print '  '.join(self.upper_attri[::-1])
+		print '  '.join(self.bottom_attri[::-1])
 		for index in range(4):
 			#贼
 			if self.fe_instance.is_overcoming(self.bottom_attri[index], self.upper_attri[index]):
@@ -35,9 +35,9 @@ class trishift:
 			if self.fe_instance.is_overcomed(self.bottom_attri[index], self.upper_attri[index]):
 				self.up_bottom_overcome[index] = 2	
 			
-		#print '  '.join(list(map(lambda x:['  ', '贼','克'][x], self.up_bottom_overcome[::-1])))
+		print '  '.join(list(map(lambda x:['  ', '贼','克'][x], self.up_bottom_overcome[::-1])))
 		today_stoeb = self.st_instance.stoeb[self.st_instance.names.index(self.bottomlist[0])]	
-		#print '日干寄宫'+today_stoeb		
+		print '日干寄宫'+today_stoeb		
 		full_four = (len(self.upperlist)==len(set(self.upperlist)))	
 		'''
 		if self.bottomlist[0] == '戊' and self.bottomlist[2] == '辰' and self.upperlist[0] == '子':
@@ -51,7 +51,7 @@ class trishift:
 			self.spec(2)
 			return self.out_lines				
 		if full_four == False:
-			#print '不备'						
+			print '不备'					
 			#伏吟
 			if self.upperlist[0] == today_stoeb: 
 				self.ninefunc = "伏吟"
@@ -68,11 +68,12 @@ class trishift:
 			for index in range(4):
 				if self.up_bottom_overcome[index] == 1:					
 					tmpyinyang = self.eb_instance.yinyang[self.eb_instance.names.index(self.upperlist[index])]
-					#print stattr +tmpyinyang
+					print stattr +tmpyinyang
 					if tmpyinyang == stattr:
 						same_attr[index] = 1
-			#比用			
-			if same_attr.count(1) == 1:
+			#比用	
+			print "阴阳相比 "+str(same_attr.count(1))
+			if same_attr.count(1) == 1 or (self.bottomlist[2] == today_stoeb and same_attr.count(1) == 2) :
 				self.ninefunc = "比用"		
 				self.haske(same_attr.index(1))	
 			else:
@@ -90,7 +91,7 @@ class trishift:
 						ltmpindex = self.eb_instance.names.index(tmpstr)												
 						ltmpindex = self.eb_instance.tricoop[ltmpindex].index(tmpstr)
 						sehai[index] = ['孟', '仲', '季'][ltmpindex]
-						#print self.bottomlist[index]+' 涉害 '+sehai[index]
+						print self.bottomlist[index]+' 涉害 '+sehai[index]
 				if sehai.count('孟') == 1:
 					tmpindex = sehai.index('孟')
 				elif sehai.count('孟') == 0 and sehai.count('仲') == 1:
@@ -124,11 +125,12 @@ class trishift:
 			for index in range(4):
 				if self.up_bottom_overcome[index] == 2:
 					tmpyinyang = self.eb_instance.yinyang[self.eb_instance.names.index(self.upperlist[index])]
-					#print stattr +tmpyinyang
+					print stattr +tmpyinyang
 					if tmpyinyang == stattr:
 						same_attr[index] = 1
+			print "阴阳相比 "+str(same_attr.count(1))			
 			#比用			
-			if same_attr.count(1) == 1:
+			if same_attr.count(1) == 1 or (self.bottomlist[2] == today_stoeb and same_attr.count(1) == 2) :
 				self.ninefunc = "比用"		
 				self.haske(same_attr.index(1))	
 			else:
@@ -146,7 +148,7 @@ class trishift:
 						ltmpindex = self.eb_instance.names.index(tmpstr)												
 						ltmpindex = self.eb_instance.tricoop[ltmpindex].index(tmpstr)
 						sehai[index] = ['孟', '仲', '季'][ltmpindex]
-						#print self.upperlist[index]+' 涉害 '+sehai[index]
+						print self.upperlist[index]+' 涉害 '+sehai[index]
 				if sehai.count('孟') == 1:
 					tmpindex = sehai.index('孟')
 				elif sehai.count('孟') == 0 and sehai.count('仲') == 1:
@@ -178,7 +180,7 @@ class trishift:
 			#蒿	
 			if self.fe_instance.is_overcomed(self.bottom_attri[0], self.upper_attri[index]):
 				self.up_bottom_overcome_yao[index] = 4
-		#print '  '.join(list(map(lambda x:['  ', '贼','克', '弹', '矢'][x], self.up_bottom_overcome_yao[::-1])))
+		print '  '.join(list(map(lambda x:['  ', '贼','克', '弹', '矢'][x], self.up_bottom_overcome_yao[::-1])))
 		#蒿矢	
 		if self.up_bottom_overcome_yao.count(4) == 1:	
 			self.ninefunc = "遥克"
@@ -194,12 +196,12 @@ class trishift:
 						same_attr[index] = 1		
 			if same_attr.count(1) == 1:	
 				self.haske(same_attr.index(1))				
-			return self.out_lines	
+				return self.out_lines	
 		#弹射
 		if self.up_bottom_overcome_yao.count(3)==1:
 			self.ninefunc = "遥克"
 			self.haske(self.up_bottom_overcome_yao.index(3))
-			return self.out_lines	
+			return self.out_lines		
 		if self.up_bottom_overcome_yao.count(3)>1:
 			self.ninefunc = "遥克"
 			stattr = self.bottom_attri[0]
@@ -210,7 +212,7 @@ class trishift:
 						same_attr[index] = 1		
 			if same_attr.count(1) == 1:	
 				self.haske(same_attr.index(1))			
-			return self.out_lines	
+				return self.out_lines		
 		if full_four == False:
 			#别责
 			if len(set(self.upperlist)) == 3:
@@ -232,8 +234,8 @@ class trishift:
 			self.angxing()
 		return self.out_lines
 	def out_res(self):
-		#print self.ninefunc
-		#print ' '.join(self.tri)
+		print self.ninefunc
+		print ' '.join(self.tri)
 		#map(lambda x: self.skyplate_st[self.skyplate.index(x)]+x , self.tri)
 		#tmpl = list(map(lambda x: self.skyplate_st[self.skyplate.index(x)]+x+"  "+ self.skygeneral[self.skyplate.index(x)], self.tri))
 		tmpl = list(map(lambda x: self.skyplate_st[self.skyplate.index(x)]+x+"&nbsp&nbsp"+ self.skygeneral[self.skyplate.index(x)], self.tri))
@@ -362,10 +364,12 @@ class trishift:
 		self.tri[2] = self.upperlist[2]			
 		self.out_res()
 	def bazhuan(self):
+		stattr = self.st_instance.yinyang[self.st_instance.names.index(self.bottomlist[0])]	
+		tmp_plate =   ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥']
 		if stattr == '阳':
-			self.tri[0] = self.skyplate[(self.skyplate.index(self.upperlist[0])+3)%12]
+			self.tri[0] = tmp_plate[(tmp_plate.index(self.upperlist[0])+2)%12]
 		else:
-			self.tri[0] = self.skyplate[(self.skyplate.index(self.upperlist[0])-3+12)%12]	
+			self.tri[0] = tmp_plate[(tmp_plate.index(self.upperlist[3])-2+12)%12]
 		self.tri[1] = self.upperlist[0]
 		self.tri[2] = self.upperlist[0]			
 		self.out_res()	
