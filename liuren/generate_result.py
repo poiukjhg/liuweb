@@ -76,6 +76,10 @@ class generate_result():
 		global_record_list.set_global_record(15, self.skygeneral[self.skyplate.index(self.upper_four[1])])
 		global_record_list.set_global_record(18, self.skygeneral[self.skyplate.index(self.upper_four[2])])
 		global_record_list.set_global_record(21, self.skygeneral[self.skyplate.index(self.upper_four[3])])
+		index = 0
+		for index in range(12):
+			global_record_list.set_global_record(34+index, self.skyplate[index])
+			global_record_list.set_global_record(46+index, self.skygeneral[index])
 	def generate_trishift(self):
 		self.trishift = trishift.trishift(self.upper_four, self.bottom_four, self.skyplate, self.skygeneral, self.skyplate_st)
 		'''
