@@ -21,6 +21,7 @@ class liuq_log(BaseModel):
     _id = PrimaryKeyField()
     plate_date = CharField()
     plate_file = TextField()
+    plate_time = CharField()
     save_time = DateTimeField(default=datetime.datetime.now)
 
 def init_db():
@@ -29,9 +30,9 @@ def init_db():
     print liuren_dbcfg.database.create_tables([liuq_log], safe=True)
 
 
-def add_liuq_log(pdate, ptest):
+def add_liuq_log(pdate, ptest, fortell_time):
     #print ptest
-    liuq_log.create(plate_date=pdate, plate_file=ptest)
+    liuq_log.create(plate_date=pdate, plate_file=ptest, plate_time=fortell_time )
 
 def build_summary_from_date(plate_date):
     l = plate_date.split(',')
@@ -58,7 +59,7 @@ def get_liuq_all(qid=None):
     item = {}
     index = 0
     for i in l:
-        item = {'id': i._id,'summary': build_summary_from_date(i.plate_date), 'detail': i.plate_file}
+        item = {'id': i._id,'summary': build_summary_from_date(i.plate_date)+' '+(i.plate_time or ' '), 'detail': i.plate_file}
         L[str(index)] = item
         index= index+1;
     return L

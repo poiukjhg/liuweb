@@ -60,7 +60,7 @@ def liu_page2():
 		error = "no answer"
 		return render_template('error.html', error=error)
 	resp = make_response(render_template('liu.html', res = result))
-	resp.set_cookie('cur_fortel', fortell)
+	resp.set_cookie('cur_fortel', fortell_time)
         tmpstr = global_record_list.get_global_record()
         resp.set_cookie('save_data', tmpstr)
         print 'save str '+ tmpstr
@@ -75,7 +75,8 @@ def upload_file():
 	#tmpstr = global_record_list.get_global_record()
 		tmpstr = request.cookies.get('save_data')
 		print 'save str '+ tmpstr
-		liuren_db.add_liuq_log(tmpstr, fstr)
+		tmpfortell = request.cookies.get('cur_fortel')
+		liuren_db.add_liuq_log(tmpstr, fstr, tmpfortell)
 		liuren_db.destroy_db()
     	'''
     	fstr = fstr.replace('</p>', '\n\r')
