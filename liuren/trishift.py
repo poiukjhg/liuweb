@@ -327,35 +327,32 @@ class trishift:
 		self.tri[2] = self.upperlist[0]			
 		self.out_res()		
 	def fuyin(self):
+		stattr = self.st_instance.yinyang[self.st_instance.names.index(self.bottomlist[0])]	
 		#不虞
 		if self.up_bottom_overcome[0] != 0:
 			self.tri[0] = self.upperlist[0]
-			self.tri[1] = self.eb_instance.xing[self.eb_instance.names.index(self.tri[0])]
-			self.tri[2] = self.eb_instance.xing[self.eb_instance.names.index(self.tri[1])]
-		else:
-			stattr = self.st_instance.yinyang[self.st_instance.names.index(self.bottomlist[0])]				
+		else:	
+		#自任					
 			if stattr == '阳':	
-				tmpstr = self.upperlist[0]		
+				self.tri[0] = self.upperlist[0]	
+		#自信			
 			else:
-				tmpstr = self.upperlist[2]
-			if tmpstr != self.eb_instance.xing[self.eb_instance.names.index(tmpstr)]:	
-			#自任				
-			#自信
-				self.tri[0] = tmpstr
-				self.tri[1] = self.eb_instance.xing[self.eb_instance.names.index(self.tri[0])]
-				self.tri[2] = self.eb_instance.xing[self.eb_instance.names.index(self.tri[1])]	
-			#杜传
+				self.tri[0] = self.upperlist[2]
+		if self.tri[0] != self.eb_instance.xing[self.eb_instance.names.index(self.tri[0])]:
+			self.tri[1] = self.eb_instance.xing[self.eb_instance.names.index(self.tri[0])] 	
+		else:
+			if stattr == '阳':	
+				self.tri[1] = self.upperlist[2]		
 			else:
-				self.tri[0] = tmpstr
-				if stattr == '阳':	
-					self.tri[1] = self.upperlist[2]		
-				else:
-					self.tri[1] = self.upperlist[0]	
-				if 	self.tri[1] == self.eb_instance.xing[self.eb_instance.names.index(self.tri[1])]:
-					self.tri[2] = self.eb_instance.opposited[self.eb_instance.names.index(self.tri[1])]
-				else:	
-					self.tri[2] = self.eb_instance.xing[self.eb_instance.names.index(self.tri[1])]
-
+				self.tri[1] = self.upperlist[0]	
+				if self.tri[1] == self.tri[0]:
+					self.tri[1] = self.upperlist[2]						
+		if 	self.tri[1] != self.eb_instance.xing[self.eb_instance.names.index(self.tri[1])]:
+			self.tri[2] = self.eb_instance.xing[self.eb_instance.names.index(self.tri[1])]
+			if self.tri[2] == self.tri[0]:
+				self.tri[2] = self.eb_instance.opposited[self.eb_instance.names.index(self.tri[1])]	
+		else:
+			self.tri[2] = self.eb_instance.opposited[self.eb_instance.names.index(self.tri[1])]	
 		self.out_res()
 	def fanyin(self):
 		#无亲
