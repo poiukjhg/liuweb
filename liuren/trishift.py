@@ -181,6 +181,24 @@ class trishift:
 			if self.fe_instance.is_overcomed(self.bottom_attri[0], self.upper_attri[index]):
 				self.up_bottom_overcome_yao[index] = 4
 		print '  '.join(list(map(lambda x:['  ', '贼','克', '弹', '矢'][x], self.up_bottom_overcome_yao[::-1])))
+		#去重
+		check_same = ""
+		for index in range(1, 3):
+			if self.up_bottom_overcome_yao[index] == 4:
+				check_same = self.upperlist[index]
+				#print "check_same = "+check_same+str(index)
+				for tmpindex in range(index+1, 3):
+					#print "check "+str(tmpindex)+self.upperlist[tmpindex]
+					if self.upperlist[tmpindex] == check_same:
+						self.up_bottom_overcome_yao[tmpindex] = 0
+		for index in range(1, 3):
+			if self.up_bottom_overcome_yao[index] == 3:
+				check_same = self.upperlist[index]
+				#print "check_same = "+check_same+str(index)
+				for tmpindex in range(index+1, 3):
+					#print "check "+str(tmpindex)+self.upperlist[tmpindex]
+					if self.upperlist[tmpindex] == check_same:
+						self.up_bottom_overcome_yao[tmpindex] = 0
 		#蒿矢	
 		if self.up_bottom_overcome_yao.count(4) == 1:	
 			self.ninefunc = "遥克"
